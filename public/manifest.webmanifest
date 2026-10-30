@@ -1,0 +1,21 @@
+{
+  "name": "رادار السوق",
+  "short_name": "رادار السوق",
+  "description": "أسعار لحظية وأخبار عاجلة وتقدير تأثير آلي للكريبتو والذهب والطاقة وأسهم التقنية.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#070b12",
+  "theme_color": "#070b12",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

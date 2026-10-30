@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#070b12">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="رادار السوق: أسعار لحظية ورسوم بيانية وأخبار عاجلة بالعربية مع تقدير تأثير آلي للعملات الرقمية والذهب والطاقة وأسهم التكنولوجيا والذكاء الاصطناعي.">
+  <meta property="og:title" content="رادار السوق — أسعار وأخبار عاجلة وتقدير تأثير">
+  <meta property="og:description" content="لوحة عربية لمتابعة الكريبتو والذهب والطاقة وأسهم التقنية، مع أخبار مترجمة وتقدير تأثير آلي.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/favicon.svg">
+  <meta name="twitter:card" content="summary">
+  <title>رادار السوق — أسعار لحظية وأخبار عاجلة وتقدير تأثير</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/vendor/chart.umd.min.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" role="img">
+          <circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".35"/>
+          <circle cx="24" cy="24" r="10" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".6"/>
+          <circle cx="24" cy="24" r="2.6" fill="currentColor"/>
+          <path d="M24 24 38 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M10 34a17 17 0 0 1 3-21" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>رادار السوق</h1>
+        <p>أسعار لحظية · أخبار عاجلة · تقدير تأثير</p>
+      </div>
+    </div>
+
+    <div class="top-status">
+      <div class="clock">
+        <span id="clock" class="mono">--:--:--</span>
+        <span id="date" class="muted">—</span>
+      </div>
+      <div id="conn" class="conn is-connecting" role="status" aria-live="polite">
+        <span class="dot"></span><span id="connText">جارٍ الاتصال…</span>
+      </div>
+      <button id="soundBtn" class="icon-btn" type="button" aria-pressed="false" title="تشغيل/إيقاف الصوت">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <span class="sr-only">الصوت</span>
+      </button>
+      <button id="notifyBtn" class="icon-btn" type="button" aria-pressed="false" title="إشعارات المتصفح">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 4 1.5 5 2 6H4c.5-1 2-2 2-6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <span class="sr-only">إشعارات المتصفح</span>
+      </button>
+      <button id="settingsBtn" class="btn" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        الإعدادات
+      </button>
+    </div>
+  </header>
+
+  <nav class="ticker" aria-label="شريط الأسعار">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </nav>
+
+  <main class="layout">
+    <aside class="panel watchlist" aria-label="لوحة المتابعة">
+      <div class="panel-head">
+        <div class="head-title">
+          <h2>لوحة المتابعة</h2>
+          <span class="muted small" id="watchUpdated">—</span>
+        </div>
+        <span class="live-pill"><span class="dot"></span> مباشر</span>
+      </div>
+      <div class="filter-row" id="watchFilters">
+        <button type="button" data-cls="all" class="active">الكل</button>
+        <button type="button" data-cls="crypto">كريبتو</button>
+        <button type="button" data-cls="gold">ذهب</button>
+        <button type="button" data-cls="energy">طاقة</button>
+        <button type="button" data-cls="tech">تقنية</button>
+        <button type="button" data-cls="macro">مؤشرات</button>
+      </div>
+      <div id="watchList" class="watch-list"></div>
+
+      <div class="source-health">
+        <div class="source-head">
+          <h3>حالة المصادر</h3>
+          <span id="sourceSummary" class="muted small">—</span>
+        </div>
+        <div id="sourceList" class="source-list"></div>
+      </div>
+    </aside>
+
+    <section class="center-col">
+      <section class="panel breaking-panel" id="breakingPanel" aria-label="الأخبار العاجلة" aria-live="polite">
+        <div class="panel-head breaking-head">
+          <div class="head-title">
+            <span class="breaking-flag"><span class="pulse-dot"></span> عاجل</span>
+            <span id="breakingCount" class="muted small">—</span>
+          </div>
+          <div class="breaking-tools">
+            <div class="segmented speed" id="breakingSpeed" role="group" aria-label="سرعة العرض">
+              <button type="button" data-speed="1" class="active">1×</button>
+              <button type="button" data-speed="1.5">1.5×</button>
+              <button type="button" data-speed="2">2×</button>
+              <button type="button" data-speed="3">3×</button>
+            </div>
+            <button id="breakingPrev" class="icon-btn sm" type="button" title="السابق" aria-label="الخبر السابق">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button id="breakingPause" class="icon-btn sm" type="button" title="إيقاف/تشغيل التبديل" aria-pressed="false" aria-label="إيقاف التبديل التلقائي">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            </button>
+            <button id="breakingNext" class="icon-btn sm" type="button" title="التالي" aria-label="الخبر التالي">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <div id="breakingSlide" class="breaking-slide">
+          <div class="breaking-empty">بانتظار الأخبار العاجلة… ستظهر هنا تلقائيًا عند توفرها.</div>
+        </div>
+      </section>
+
+      <section class="panel tech-panel" aria-label="أسهم التكنولوجيا والذكاء الاصطناعي">
+        <div class="panel-head">
+          <div class="head-title">
+            <h2>أسهم التكنولوجيا والذكاء الاصطناعي</h2>
+            <span id="techCount" class="badge">0</span>
+          </div>
+          <span class="muted small">Yahoo Finance · قد تتأخر أثناء الإغلاق</span>
+        </div>
+        <div id="techGrid" class="tech-grid"></div>
+      </section>
+
+      <section class="panel chart-panel" aria-label="الرسم البياني">
+        <div class="panel-head chart-head">
+          <div class="asset-title">
+            <span id="chartClass" class="chip">كريبتو</span>
+            <div>
+              <h2 id="chartName">بيتكوين</h2>
+              <span id="chartSymbol" class="mono muted">BTC/USDT</span>
+            </div>
+          </div>
+          <div class="chart-actions">
+            <div class="segmented" id="rangeTabs" role="group" aria-label="المدى الزمني">
+              <button type="button" data-range="300">5د</button>
+              <button type="button" data-range="900">15د</button>
+              <button type="button" data-range="3600" class="active">1س</button>
+              <button type="button" data-range="14400">4س</button>
+            </div>
+            <button id="chartFullscreen" class="icon-btn" type="button" title="تكبير الرسم">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="sr-only">تكبير</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="price-row">
+          <div class="price-main">
+            <span id="chartPrice" class="mono">—</span>
+            <span id="chartUnit" class="unit">USDT</span>
+          </div>
+          <div id="chartChange" class="change-badge neutral">—</div>
+          <div class="ohlc">
+            <div><span>أعلى</span><strong id="chartHigh" class="mono">—</strong></div>
+            <div><span>أدنى</span><strong id="chartLow" class="mono">—</strong></div>
+            <div><span>افتتاح</span><strong id="chartOpen" class="mono">—</strong></div>
+            <div><span>آخر تحديث</span><strong id="chartTs" class="mono">—</strong></div>
+          </div>
+        </div>
+
+        <div class="chart-wrap">
+          <canvas id="chart" aria-label="منحنى السعر"></canvas>
+          <div id="chartEmpty" class="chart-empty">بانتظار البيانات…</div>
+        </div>
+        <div class="chart-foot">
+          <span id="chartSource">المصدر: Binance</span>
+          <span id="chartNote" class="muted"></span>
+          <span id="chartPoints" class="muted mono"></span>
+        </div>
+      </section>
+
+      <section class="panel news-panel" aria-label="تدفق الأخبار">
+        <div class="panel-head">
+          <div class="head-title">
+            <h2>تدفق الأخبار</h2>
+            <span id="newsCount" class="badge">0</span>
+          </div>
+          <div class="news-tools">
+            <div class="search">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <input id="newsSearch" type="search" placeholder="ابحث في الأخبار…" aria-label="بحث في الأخبار">
+            </div>
+            <button id="newsPause" class="ghost-btn" type="button" aria-pressed="false">إيقاف</button>
+          </div>
+        </div>
+        <div class="filter-row news-filters" id="newsFilters">
+          <button type="button" data-cls="all" class="active">الكل</button>
+          <button type="button" data-cls="breaking">عاجل</button>
+          <button type="button" data-cls="crypto">كريبتو</button>
+          <button type="button" data-cls="gold">ذهب</button>
+          <button type="button" data-cls="energy">طاقة</button>
+          <button type="button" data-cls="tech">تقنية</button>
+          <button type="button" data-cls="macro">اقتصاد</button>
+          <button type="button" data-cls="x">X</button>
+        </div>
+        <div id="newsList" class="news-list" aria-live="polite"></div>
+        <div class="news-foot">
+          <span>آخر تحديث <span id="newsUpdated">—</span></span>
+          <span class="muted">Google News · RSS · Reddit · Mastodon · X اختياري · ترجمة آلية</span>
+        </div>
+      </section>
+    </section>
+
+    <aside class="panel alerts-panel" aria-label="مركز التنبيهات">
+      <div class="panel-head">
+        <div class="head-title">
+          <h2>مركز التنبيهات</h2>
+          <span id="alertCount" class="badge">0</span>
+        </div>
+        <div class="alert-actions">
+          <button id="ackAll" class="ghost-btn" type="button">تعليم الكل</button>
+          <button id="testAlert" class="ghost-btn" type="button">اختبار</button>
+        </div>
+      </div>
+      <div class="filter-row" id="alertFilters">
+        <button type="button" data-sev="all" class="active">الكل</button>
+        <button type="button" data-sev="high">حرج</button>
+        <button type="button" data-sev="medium">مهم</button>
+        <button type="button" data-sev="low">منخفض</button>
+      </div>
+      <div id="alertList" class="alert-list" aria-live="polite"></div>
+      <div class="alert-foot">
+        <label class="toggle"><input type="checkbox" id="soundToggle"> تنبيه صوتي</label>
+        <label class="toggle"><input type="checkbox" id="notifyToggle"> إشعارات المتصفح</label>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <div>رادار السوق · بيانات معلوماتية وليست نصيحة استثمارية · تقدير التأثير آلي وليس تنبؤًا · قد تتأخر الأسعار حسب المصدر</div>
+    <div id="footerStatus" class="mono">—</div>
+  </footer>
+
+  <dialog id="settingsDialog" class="dialog">
+    <form method="dialog" class="dialog-inner" id="settingsForm">
+      <div class="dialog-head">
+        <h2>إعدادات الرادار</h2>
+        <button class="icon-btn" value="cancel" aria-label="إغلاق" type="submit">✕</button>
+      </div>
+
+      <section class="settings-section">
+        <h3>حساسية التنبيهات</h3>
+        <p class="muted small">كلما زادت الحساسية انخفضت عتبة التنبيه وزاد عدد التنبيهات.</p>
+        <div class="segmented wide" id="sensitivityGroup">
+          <label><input type="radio" name="sensitivity" value="calm"> هادئ</label>
+          <label><input type="radio" name="sensitivity" value="balanced" checked> متوازن</label>
+          <label><input type="radio" name="sensitivity" value="sensitive"> حساس</label>
+        </div>
+        <label class="switch-row">
+          <span>تنبيهات الأخبار المؤثرة</span>
+          <input type="checkbox" id="newsAlertsToggle" checked>
+        </label>
+      </section>
+
+      <section class="settings-section">
+        <h3>حدود سعرية مخصصة</h3>
+        <p class="muted small">أضف حدًا أعلى أو أدنى لأي أصل؛ سيصلك تنبيه عند اختراقه.</p>
+        <div class="alert-form">
+          <select id="alertAsset" aria-label="اختيار الأصل"></select>
+          <input id="alertAbove" class="mono" type="number" step="any" min="0" placeholder="أعلى من">
+          <input id="alertBelow" class="mono" type="number" step="any" min="0" placeholder="أدنى من">
+          <button id="addPriceAlert" class="btn" type="button">إضافة</button>
+        </div>
+        <div id="priceAlertList" class="price-alert-list"></div>
+      </section>
+
+      <section class="settings-section">
+        <h3>التكاملات</h3>
+        <div id="integrationStatus" class="integration-status"></div>
+      </section>
+
+      <section class="settings-section">
+        <h3>مصادر البيانات</h3>
+        <div id="settingsSources" class="settings-sources"></div>
+      </section>
+
+      <div class="dialog-foot">
+        <button class="ghost-btn" value="cancel" type="submit">إلغاء</button>
+        <button class="btn primary" id="saveSettings" value="default" type="submit">حفظ الإعدادات</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+data
+node_modules
+coverage
+*.log
+*.zip
+docs
+tests
+.github-token
+github-token.txt

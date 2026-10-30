@@ -1,0 +1,38 @@
+# Render Blueprint — نشر عام بضغطة واحدة.
+# أنشئ الحساب ثم: New > Blueprint > اختر مستودع GitHub.
+services:
+  - type: web
+    name: market-radar
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    autoDeploy: true
+    buildCommand: node -e "console.log('zero-dependency build')"
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: HOST
+        value: "0.0.0.0"
+      - key: NEWS_POLL_SCALE
+        value: "100"
+      - key: TRANSLATE_ENABLED
+        value: "1"
+      - key: TRANSLATE_SUMMARIES
+        value: auto
+      - key: IMAGE_ENRICH_ENABLED
+        value: "1"
+      - key: NEWS_PIPELINE_ENABLED
+        value: "1"
+      - key: MASTODON_POLL_MS
+        value: "180000"
+      # اختياري: أضف X_BEARER_TOKEN من لوحة Render إذا كان لديك API رسمي.
+      - key: X_BEARER_TOKEN
+        sync: false
+      # اختياري: Telegram
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false

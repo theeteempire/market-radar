@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#070b12">
+  <meta name="color-scheme" content="dark">
+  <title>رادار السوق — أسعار وأخبار عاجلة وتقدير تأثير</title>
+  <meta name="description" content="منصة عربية مفتوحة المصدر لمتابعة الكريبتو والذهب والطاقة وأسهم التكنولوجيا والذكاء الاصطناعي: أسعار لحظية، أخبار عاجلة بالصور، ترجمة عربية، وتقدير تأثير آلي.">
+  <meta property="og:title" content="رادار السوق — منصة عربية للأسعار والأخبار العاجلة">
+  <meta property="og:description" content="أسعار لحظية، أخبار عاجلة بالصور، ترجمة عربية، أسهم تقنية، وتقدير تأثير آلي. مفتوحة المصدر ومتوافقة مع الجوال.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="preview.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: rgba(13, 20, 33, 0.78);
+      --line: rgba(148, 163, 184, 0.16);
+      --text: #e8f1ff;
+      --muted: #93a4bb;
+      --dim: #6b7c93;
+      --green: #2ee6a8;
+      --red: #ff5d73;
+      --amber: #ffb020;
+      --cyan: #4cc9f0;
+      --violet: #a78bfa;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Cairo, "Segoe UI", Tahoma, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(900px 520px at 85% -10%, rgba(56, 225, 176, 0.13), transparent 60%),
+        radial-gradient(800px 500px at 5% 5%, rgba(76, 201, 240, 0.11), transparent 62%),
+        radial-gradient(700px 600px at 50% 110%, rgba(167, 139, 250, 0.09), transparent 60%),
+        linear-gradient(180deg, #070b12 0%, #080d16 50%, #060a10 100%);
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.35;
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at 50% 0%, #000 20%, transparent 78%);
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1160px, calc(100% - 32px)); margin: 0 auto; }
+    .nav {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(14px);
+      background: rgba(7, 11, 18, 0.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; }
+    .brand svg { width: 34px; height: 34px; color: var(--green); }
+    .brand small { display: block; font-size: 10px; font-weight: 500; color: var(--muted); }
+    .nav-links { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .nav-links a { font-size: 12.5px; color: var(--muted); padding: 7px 10px; border-radius: 8px; }
+    .nav-links a:hover { color: var(--text); background: rgba(148, 163, 184, 0.08); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      border-radius: 10px; padding: 9px 16px; font-size: 13px; font-weight: 700;
+      border: 1px solid var(--line); background: rgba(148, 163, 184, 0.06); color: var(--text);
+      transition: 0.16s; white-space: nowrap;
+    }
+    .btn:hover { border-color: rgba(56, 225, 176, 0.4); background: rgba(56, 225, 176, 0.08); }
+    .btn.primary { background: linear-gradient(135deg, #2ee6a8, #17b98a); color: #04110d; border-color: transparent; }
+    .btn.primary:hover { filter: brightness(1.06); }
+    .btn.ghost { background: transparent; }
+    .hero { padding: 64px 0 34px; display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr); gap: 34px; align-items: center; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; color: var(--green);
+      border: 1px solid rgba(56, 225, 176, 0.3); background: rgba(56, 225, 176, 0.07);
+      padding: 4px 11px; border-radius: 999px;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.45; transform: scale(0.8); } }
+    h1 { font-size: clamp(30px, 4.4vw, 52px); line-height: 1.22; margin: 16px 0 12px; font-weight: 900; letter-spacing: -0.4px; }
+    h1 span { background: linear-gradient(90deg, var(--green), var(--cyan), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .lead { font-size: clamp(14px, 1.5vw, 17px); color: #b9c9dd; max-width: 620px; margin: 0 0 20px; }
+    .hero-actions { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 14px; }
+    .hero-note { font-size: 11px; color: var(--dim); }
+    .hero-note code { font-family: var(--mono); color: var(--muted); }
+    .shot {
+      position: relative; border-radius: 16px; overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      background: #0b1220;
+      box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(56, 225, 176, 0.06) inset;
+    }
+    .shot img { display: block; width: 100%; height: auto; }
+    .shot::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, transparent 60%, rgba(7, 11, 18, 0.35));
+    }
+    .shot-badge {
+      position: absolute; inset-inline-start: 12px; bottom: 12px; z-index: 2;
+      font-size: 10px; color: #d7e5f7; background: rgba(7, 11, 18, 0.72);
+      border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px;
+      backdrop-filter: blur(8px);
+    }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 26px 0 0; }
+    .stat { border: 1px solid var(--line); background: var(--panel); border-radius: 12px; padding: 12px 14px; }
+    .stat b { display: block; font-size: 21px; font-weight: 800; color: #f2f8ff; line-height: 1.3; }
+    .stat span { font-size: 10.5px; color: var(--muted); }
+    section { padding: 46px 0; }
+    .sec-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+    .sec-head h2 { font-size: clamp(21px, 2.6vw, 30px); margin: 0; font-weight: 800; }
+    .sec-head p { margin: 4px 0 0; color: var(--muted); font-size: 12.5px; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .card {
+      border: 1px solid var(--line); background: var(--panel); border-radius: 14px; padding: 18px;
+      transition: 0.16s; min-width: 0;
+    }
+    .card:hover { border-color: rgba(56, 225, 176, 0.3); transform: translateY(-2px); }
+    .icon {
+      width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center;
+      background: rgba(56, 225, 176, 0.08); border: 1px solid rgba(56, 225, 176, 0.22);
+      color: var(--green); font-size: 18px; margin-bottom: 10px;
+    }
+    .card h3 { font-size: 14px; margin: 0 0 5px; font-weight: 800; }
+    .card p { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.75; }
+    .card.tech .icon { background: rgba(125, 211, 252, 0.08); border-color: rgba(125, 211, 252, 0.22); color: #7dd3fc; }
+    .card.gold .icon { background: rgba(232, 193, 90, 0.08); border-color: rgba(232, 193, 90, 0.22); color: #e8c15a; }
+    .card.violet .icon { background: rgba(167, 139, 250, 0.08); border-color: rgba(167, 139, 250, 0.22); color: var(--violet); }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; counter-reset: step; }
+    .step { position: relative; border: 1px solid var(--line); background: var(--panel); border-radius: 14px; padding: 18px 18px 16px 46px; }
+    .step::before {
+      counter-increment: step; content: counter(step);
+      position: absolute; inset-inline-start: 14px; top: 16px;
+      width: 24px; height: 24px; border-radius: 50%;
+      display: grid; place-items: center; font-size: 11px; font-weight: 800;
+      color: #04110d; background: var(--green);
+    }
+    .step h3 { margin: 0 0 4px; font-size: 13.5px; }
+    .step p { margin: 0; font-size: 11.5px; color: var(--muted); }
+    .panel {
+      border: 1px solid var(--line); background: var(--panel); border-radius: 14px; padding: 20px;
+    }
+    .code {
+      direction: ltr; text-align: left; font-family: var(--mono); font-size: 12px;
+      background: #060a11; border: 1px solid var(--line); border-radius: 10px;
+      padding: 13px 14px; overflow-x: auto; color: #cfe0f4; line-height: 1.7;
+    }
+    .code .c { color: #5f7288; }
+    .code .g { color: var(--green); }
+    .two { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 14px; align-items: start; }
+    .list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+    .list li { display: flex; gap: 8px; font-size: 12px; color: var(--muted); }
+    .list li::before { content: "✓"; color: var(--green); font-weight: 800; flex: 0 0 auto; }
+    .warn-list li::before { content: "!"; color: var(--amber); }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 560px; }
+    th, td { padding: 9px 12px; text-align: right; border-bottom: 1px solid var(--line); }
+    th { color: var(--muted); font-weight: 600; background: rgba(148, 163, 184, 0.04); }
+    tr:last-child td { border-bottom: 0; }
+    td code { font-family: var(--mono); font-size: 11px; color: #cfe0f4; direction: ltr; }
+    .cta {
+      display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+      border: 1px solid rgba(56, 225, 176, 0.24); border-radius: 16px; padding: 24px;
+      background: linear-gradient(120deg, rgba(56, 225, 176, 0.08), rgba(76, 201, 240, 0.05), rgba(167, 139, 250, 0.06));
+    }
+    .cta h2 { margin: 0 0 4px; font-size: 20px; }
+    .cta p { margin: 0; color: var(--muted); font-size: 12px; }
+    footer { border-top: 1px solid var(--line); padding: 24px 0 34px; margin-top: 20px; color: var(--dim); font-size: 11px; }
+    .foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .foot a { color: var(--muted); }
+    .foot a:hover { color: var(--text); }
+    .mono { font-family: var(--mono); direction: ltr; }
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; gap: 24px; padding-top: 40px; }
+      .hero .shot { order: -1; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .steps { grid-template-columns: 1fr; }
+      .two { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .nav-links a:not(.btn) { display: none; }
+      .hero { padding-top: 28px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .grid { grid-template-columns: 1fr; }
+      .card { padding: 15px; }
+      .cta { padding: 18px; }
+      .btn { padding: 9px 13px; }
+      h1 { font-size: 30px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="رادار السوق">
+        <svg viewBox="0 0 48 48" role="img" aria-hidden="true">
+          <circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".35"/>
+          <circle cx="24" cy="24" r="10" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".6"/>
+          <circle cx="24" cy="24" r="2.6" fill="currentColor"/>
+          <path d="M24 24 38 12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M10 34a17 17 0 0 1 3-21" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+        </svg>
+        <span>رادار السوق<small>أسعار · أخبار عاجلة · تقدير تأثير</small></span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">الميزات</a>
+        <a href="#start">كيف تستخدمه</a>
+        <a href="#deploy">النشر</a>
+        <a class="btn" href="https://github.com/theeteempire/market-radar" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a class="btn primary" href="https://github.com/theeteempire/market-radar#deploy" target="_blank" rel="noopener noreferrer">افتح المنصة</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <div class="wrap">
+      <section class="hero" aria-label="مقدمة">
+        <div>
+          <span class="pill"><span class="dot"></span> مفتوح المصدر · عربي RTL · يعمل على الجوال</span>
+          <h1>كل ما يحرّك السوق،<br><span>في رادار واحد.</span></h1>
+          <p class="lead">
+            منصة عربية لمتابعة العملات الرقمية والذهب والطاقة وأسهم التكنولوجيا والذكاء الاصطناعي:
+            أسعار لحظية، أخبار عاجلة بالصور، ترجمة عربية، وتقدير تأثير آلي — بدون تسجيل وبدون أي حزم npm.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="https://github.com/theeteempire/market-radar#deploy" target="_blank" rel="noopener noreferrer">جرّب النسخة الحية</a>
+            <a class="btn" href="https://github.com/theeteempire/market-radar" target="_blank" rel="noopener noreferrer">استعرض الكود</a>
+            <a class="btn ghost" href="#start">التشغيل المحلي</a>
+          </div>
+          <p class="hero-note">لا يبيع ولا يوصي ولا ينفّذ صفقات. بيانات معلوماتية فقط — <code>BTC/USDT · XAU/USD · WTI · NVDA</code></p>
+        </div>
+        <figure class="shot">
+          <img src="preview.jpg" alt="لقطة من واجهة رادار السوق: شريط عاجل، أسهم تقنية، رسم بياني، وتدفق أخبار" loading="eager">
+          <figcaption class="shot-badge">واجهة حقيقية · 24 أصلًا · 12 سهم تقنية · أخبار بالصور</figcaption>
+        </figure>
+      </section>
+
+      <div class="stats" aria-label="أرقام المشروع">
+        <div class="stat"><b>24</b><span>أصلًا في المتابعة</span></div>
+        <div class="stat"><b>12</b><span>سهم تقنية وذكاء اصطناعي</span></div>
+        <div class="stat"><b>19+</b><span>مصدر أخبار وبيانات</span></div>
+        <div class="stat"><b>1s</b><span>تحديث واجهة الكريبتو</span></div>
+      </div>
+    </div>
+
+    <section id="features">
+      <div class="wrap">
+        <div class="sec-head">
+          <div>
+            <h2>ما الذي يقدّمه؟</h2>
+            <p>كل شيء في صفحة واحدة، بواجهة عربية تُبقي الرموز التقنية كما هي.</p>
+          </div>
+          <a class="btn" href="https://github.com/theeteempire/market-radar#deploy" target="_blank" rel="noopener noreferrer">شاهده مباشرة ↗</a>
+        </div>
+        <div class="grid">
+          <article class="card">
+            <div class="icon">◉</div>
+            <h3>أسعار لحظية</h3>
+            <p>Binance كل ثانية للكريبتو، وYahoo Finance كل 20 ثانية للذهب والفضة والنفط والغاز ومؤشر الدولار. الأسعار الآجلة موضّحة بوضوح.</p>
+          </article>
+          <article class="card gold">
+            <div class="icon">◈</div>
+            <h3>أخبار عاجلة بالصور</h3>
+            <p>شريط «عاجل» دوّار يقدّم أهم الأخبار مع صور حقيقية من المصدر، وتقدير تأثير آلي، وسرعات عرض 1× إلى 3× وإيقاف مؤقت.</p>
+          </article>
+          <article class="card tech">
+            <div class="icon">⌘</div>
+            <h3>أسهم التقنية والذكاء الاصطناعي</h3>
+            <p>NVDA وMSFT وAAPL وGOOGL وMETA وAMZN وTSLA وAMD وAVGO وORCL وTSM وPLTR مع أسعار وتغيّر ومخطط مصغّر.</p>
+          </article>
+          <article class="card violet">
+            <div class="icon">◔</div>
+            <h3>تقدير تأثير آلي</h3>
+            <p>محرك قواعد ثنائي اللغة يشرح الاتجاه المحتمل والثقة والأصول المتأثرة والسبب — ويُسمّى دائمًا «تقديرًا» وليس تنبؤًا.</p>
+          </article>
+          <article class="card">
+            <div class="icon">◍</div>
+            <h3>ترجمة عربية سريعة</h3>
+            <p>ترجمة آلية للعناوين والملخصات مع إبقاء النص الإنجليزي الأصلي. النصوص تُرسل إلى خدمة ترجمة خارجية — يمكن تعطيلها.</p>
+          </article>
+          <article class="card">
+            <div class="icon">◈</div>
+            <h3>تنبيهات ذكية</h3>
+            <p>حركة سعر، تقلّب غير طبيعي، كلمات أخبار مؤثرة، وحدود سعرية مخصصة. صوت اختياري وإشعارات متصفح، مع فترات تهدئة.</p>
+          </article>
+          <article class="card tech">
+            <div class="icon">⌘</div>
+            <h3>مصادر متعددة</h3>
+            <p>Google News وRSS وReddit وMastodon وHacker News، مع X API رسمي اختياري. لا كشط ولا واجهات غير رسمية.</p>
+          </article>
+          <article class="card">
+            <div class="icon">◉</div>
+            <h3>مصمم للجوال</h3>
+            <p>تخطيط متجاوب بلا تمرير أفقي، وقائمة PWA لإضافته إلى الشاشة الرئيسية، وأزرار لمس واضحة.</p>
+          </article>
+          <article class="card gold">
+            <div class="icon">◈</div>
+            <h3>بدون اعتماديات</h3>
+            <p>خادم Node وحدات مدمجة فقط، وواجهة HTML/CSS/JS خام، وChart.js منسوخ محليًا. لا npm install ولا قاعدة بيانات.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="start">
+      <div class="wrap">
+        <div class="sec-head">
+          <div>
+            <h2>كيف تستخدمه؟</h2>
+            <p>ثلاث خطوات، ثم كل شيء يعمل تلقائيًا.</p>
+          </div>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <h3>افتح المنصة</h3>
+            <p>من أي متصفح على الكمبيوتر أو الجوال. لا تسجيل ولا تثبيت.</p>
+          </div>
+          <div class="step">
+            <h3>اختر ما يهمك</h3>
+            <p>اضغط أي أصل أو سهم تقني لعرض رسمه، وفلتر الأخبار حسب الفئة أو «عاجل».</p>
+          </div>
+          <div class="step">
+            <h3>فعّل التنبيهات</h3>
+            <p>من الإعدادات اضبط الحساسية والحدود السعرية، ثم اسمح بالإشعارات والصوت.</p>
+          </div>
+        </div>
+
+        <div class="two" style="margin-top: 14px;">
+          <div class="panel">
+            <h3 style="margin:0 0 6px; font-size:15px;">شغّله على جهازك</h3>
+            <p style="margin:0 0 12px; color:var(--muted); font-size:12px;">يتطلب Node.js 20 أو أحدث. لا حاجة إلى npm install.</p>
+            <pre class="code"><span class="c"># 1) انسخ المستودع</span>
+git clone https://github.com/theeteempire/market-radar.git
+cd market-radar
+
+<span class="c"># 2) شغّل الخادم</span>
+node server.js
+
+<span class="c"># 3) افتح المتصفح</span>
+<span class="g">http://127.0.0.1:8787</span></pre>
+            <p style="margin:10px 0 0; color:var(--dim); font-size:11px;">ويندوز: استخدم <span class="mono">run.bat</span> أو <span class="mono">start.ps1</span>. الإعدادات الاختيارية في <span class="mono">.env.example</span>.</p>
+          </div>
+          <div class="panel">
+            <h3 style="margin:0 0 8px; font-size:15px;">ما ستراه</h3>
+            <ul class="list">
+              <li>شريط أسعار متحرك أعلى الصفحة</li>
+              <li>لوحة متابعة قابلة للفلترة (24 أصلًا)</li>
+              <li>شريط أخبار عاجلة بالصور والترجمة</li>
+              <li>رسم بياني تفاعلي 5د/15د/1س/4س</li>
+              <li>مركز تنبيهات مع تهدئة ومنع تكرار</li>
+              <li>حالة كل مصدر وشفافية التأخير</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="deploy">
+      <div class="wrap">
+        <div class="sec-head">
+          <div>
+            <h2>انشر نسختك العامة</h2>
+            <p>GitHub Pages يعرض هذه الصفحة فقط؛ التطبيق يحتاج استضافة Node.</p>
+          </div>
+        </div>
+        <div class="two">
+          <div class="panel">
+            <h3 style="margin:0 0 6px; font-size:15px;">Render — الأسهل</h3>
+            <p style="margin:0 0 12px; color:var(--muted); font-size:12px;">الملف <span class="mono">render.yaml</span> جاهز. اربط المستودع واضغط Apply.</p>
+            <a class="btn primary" href="https://render.com/deploy?repo=https://github.com/theeteempire/market-radar" target="_blank" rel="noopener noreferrer">Deploy to Render ↗</a>
+            <p style="margin:12px 0 0; color:var(--dim); font-size:11px;">الخطة المجانية تنام عند الخمول؛ أول فتح قد يستغرق 30–60 ثانية.</p>
+          </div>
+          <div class="panel">
+            <h3 style="margin:0 0 6px; font-size:15px;">Docker أو VPS</h3>
+            <pre class="code">docker build -t market-radar .
+docker run -d -p 8787:8787 \
+  -e HOST=0.0.0.0 \
+  market-radar</pre>
+            <p style="margin:10px 0 0; color:var(--dim); font-size:11px;">دليل كامل: <a href="https://github.com/theeteempire/market-radar/blob/main/docs/DEPLOY.md" style="color:var(--cyan);">docs/DEPLOY.md</a></p>
+          </div>
+        </div>
+
+        <div class="table-wrap" style="margin-top:14px;">
+          <table>
+            <thead><tr><th>المتغير</th><th>الافتراضي</th><th>الغرض</th></tr></thead>
+            <tbody>
+              <tr><td><code>HOST</code></td><td><code>127.0.0.1</code></td><td>للنشر العام اجعله <code>0.0.0.0</code></td></tr>
+              <tr><td><code>PORT</code></td><td><code>8787</code></td><td>المنصات تحقنه عادة تلقائيًا</td></tr>
+              <tr><td><code>TRANSLATE_ENABLED</code></td><td><code>1</code></td><td>الترجمة الآلية (نصوص تخرج لخدمة خارجية)</td></tr>
+              <tr><td><code>IMAGE_ENRICH_ENABLED</code></td><td><code>1</code></td><td>جلب صورة og:image عند غيابها</td></tr>
+              <tr><td><code>X_BEARER_TOKEN</code></td><td>فارغ</td><td>X API v2 رسمي فقط (اختياري)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="honesty">
+      <div class="wrap">
+        <div class="two">
+          <div class="panel">
+            <h2 style="margin:0 0 8px; font-size:20px;">حدود نقولها بصراحة</h2>
+            <ul class="list warn-list">
+              <li>«تحديث كل ثانية» للواجهة والكريبتو. الأخبار تُسحب كل 2–4 دقائق بسبب حدود المعدل والشروط.</li>
+              <li>الذهب والطاقة عقود آجلة (<span class="mono">GC=F</span>, <span class="mono">CL=F</span>) وليست السعر الفوري.</li>
+              <li>X يحتاج توكن API رسمي؛ بدون توكن تظهر روابط بحث يدوية فقط.</li>
+              <li>الترجمة آلية وقد تخطئ، وتُرسل النصوص إلى Google Translate غير الرسمي.</li>
+              <li>تقدير التأثير محرك كلمات مفتاحية، وليس تنبؤًا أو نصيحة استثمارية.</li>
+              <li>لا توجد مصادقة؛ الإعدادات مشتركة بين الزوار على النسخة العامة.</li>
+              <li>بعض المصادر (Reddit) قد تعيد 429 مؤقتًا؛ المنصة تتراجع تلقائيًا.</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h2 style="margin:0 0 8px; font-size:20px;">الخصوصية</h2>
+            <p style="color:var(--muted); font-size:12px; margin:0 0 10px;">
+              لا حسابات ولا تتبّع إعلاني. تُرسل عناوين الأخبار غير العربية إلى خدمة ترجمة خارجية عند تفعيل الترجمة،
+              وتُجلب الصور من مواقع المصادر. يمكن تعطيل الترجمة أو إثراء الصور بالكامل من متغيرات البيئة.
+            </p>
+            <ul class="list">
+              <li>لا تُخزَّن بيانات شخصية.</li>
+              <li>الإعدادات محلية على الخادم فقط.</li>
+              <li>كل خبر يعرض رابط المصدر الأصلي.</li>
+              <li>الترخيص MIT مع إشعارات الطرف الثالث.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="cta">
+          <div>
+            <h2>جاهز تنظر إلى السوق بوضوح؟</h2>
+            <p>افتح النسخة الحية، أو انسخ المستودع وشغّله محليًا في دقيقة.</p>
+          </div>
+          <div class="hero-actions" style="margin:0;">
+            <a class="btn primary" href="https://github.com/theeteempire/market-radar#deploy" target="_blank" rel="noopener noreferrer">افتح المنصة</a>
+            <a class="btn" href="https://github.com/theeteempire/market-radar" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div>رادار السوق · بيانات معلوماتية وليست نصيحة استثمارية · تقدير التأثير آلي وليس تنبؤًا</div>
+      <div>
+        <a href="https://github.com/theeteempire/market-radar/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a>
+        <span> · </span>
+        <a href="https://github.com/theeteempire/market-radar/blob/main/docs/DEPLOY.md" target="_blank" rel="noopener noreferrer">دليل النشر</a>
+        <span> · </span>
+        <a href="https://github.com/theeteempire/market-radar" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

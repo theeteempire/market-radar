@@ -1,0 +1,24 @@
+{
+  "name": "market-radar",
+  "version": "1.1.0",
+  "private": true,
+  "description": "منصة رادار السوق — أسعار لحظية وأخبار عاجلة وتقدير تأثير آلي للعملات الرقمية والذهب والطاقة وأسهم التقنية (عربية RTL)",
+  "homepage": "https://theeteempire.github.io/market-radar/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theeteempire/market-radar.git"
+  },
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test tests/",
+    "check": "node scripts/check-sources.js",
+    "publish:github": "node scripts/publish-github.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "license": "MIT"
+}
